@@ -1,0 +1,24 @@
+pipeline {
+    agent any 
+    stages {
+        stage('Checking if Server is up') { 
+            steps {
+				//Check if the web server is up and running
+				sh '''
+					set +x
+					if [[ -z $(ps -ef | grep $(cat web.pid) | grep http) ]]; then 
+						echo "Server is down, proceeding to start it up"; 
+					else 
+						echo "Server is already up and running";
+						exit 1
+					fi
+				'''
+            }
+        }
+		stage('Starting server'){
+			steps{
+				sh 'echo "Should be some code in here lol"'
+			}
+		}
+    }
+}
