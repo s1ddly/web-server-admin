@@ -6,10 +6,11 @@ pipeline {
 				//Check if the web server is up and running
 				sh '''
 					set +x
-					if [[ -z $(ps -ef | grep $(cat web.pid) | grep http) ]]; then 
+					if [[ -z $(ps -ef | grep $(cat /ehdd/site/log/web.pid) | grep http) ]]; then 
 						echo "Server is down, proceeding to start it up"; 
 					else 
 						echo "Server is already up and running";
+						echo "Exiting the script now"
 						exit 1
 					fi
 				'''
