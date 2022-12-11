@@ -6,7 +6,7 @@ pipeline {
 				//Check if the web server is up and running
 				sh '''
 					set +x
-					if [[ -z $(ps -ef | grep $(cat /ehdd/site/log/web.pid) | grep http) ]]; then 
+					if [[ -z $(ps -ef | grep $(cat /ehdd/site/logs/web.pid) | grep http) ]]; then 
 						echo "Server is down, proceeding to start it up"; 
 					else 
 						echo "Server is already up and running";
@@ -18,7 +18,10 @@ pipeline {
         }
 		stage('Starting server'){
 			steps{
-				sh 'echo "Should be some code in here lol"'
+				sh '''
+					cd /ehdd/site/root/
+					nohup python -m http.server > ../logs/web.log 2>&1 & echo $! > ../logs/web.pid &
+				'''
 			}
 		}
     }
